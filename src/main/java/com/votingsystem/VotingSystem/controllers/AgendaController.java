@@ -2,6 +2,8 @@ package com.votingsystem.VotingSystem.controllers;
 
 import com.votingsystem.VotingSystem.entities.Agenda;
 import com.votingsystem.VotingSystem.interfaces.IAgendaService;
+import com.votingsystem.VotingSystem.requests.CreateAgendaRequest;
+import com.votingsystem.VotingSystem.responses.CreateAgendaResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +24,14 @@ public class AgendaController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createAgenda(@RequestBody Agenda agenda) {
+    public ResponseEntity<CreateAgendaResponse> createAgenda(@RequestBody CreateAgendaRequest request) {
+        var agenda = new Agenda();
+        agenda.setQuestion(request.getQuestion());
+
         var createdAgenda = agendaService.create(agenda);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdAgenda);
+        var response = new CreateAgendaResponse(createdAgenda);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
