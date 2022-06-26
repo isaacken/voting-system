@@ -21,11 +21,6 @@ public class AgendaController {
         this.agendaService = agendaService;
     }
 
-    @GetMapping
-    public ResponseEntity<Object> helloAgenda() {
-        return ResponseEntity.status(HttpStatus.OK).body("Hello Agenda");
-    }
-
     @PostMapping
     public ResponseEntity<Object> createAgenda(@RequestBody Agenda agenda) {
         var createdAgenda = agendaService.create(agenda);
