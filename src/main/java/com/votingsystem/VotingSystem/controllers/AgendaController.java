@@ -24,14 +24,19 @@ public class AgendaController {
     }
 
     @PostMapping
-    public ResponseEntity<CreateAgendaResponse> createAgenda(@RequestBody CreateAgendaRequest request) {
+    public ResponseEntity<Object> createAgenda(@RequestBody CreateAgendaRequest request) {
         var agenda = new Agenda();
         agenda.setQuestion(request.getQuestion());
 
-        var createdAgenda = agendaService.create(agenda);
+        Agenda createdAgenda;
+
+        try {
+            createdAgenda = agendaService.create(agenda);
+        } catch (Exception exception) {
+            return ResponseEntity.status(400).body("Invalid payload");
+        }
 
         var response = new CreateAgendaResponse(createdAgenda);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

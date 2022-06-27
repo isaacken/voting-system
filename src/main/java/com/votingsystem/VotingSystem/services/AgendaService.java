@@ -16,7 +16,13 @@ public class AgendaService implements IAgendaService {
         this.agendaMongoRepository = agendaMongoRepository;
     }
 
-    public Agenda create(Agenda agenda) {
+    public Agenda create(Agenda agenda) throws Exception {
+        validateAgenda(agenda);
         return agendaMongoRepository.save(agenda);
+    }
+
+    private void validateAgenda(Agenda agenda) throws Exception {
+        if (agenda.getQuestion().isBlank())
+            throw new Exception("Cannot create new agenda to vote without a question");
     }
 }
