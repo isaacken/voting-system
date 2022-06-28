@@ -29,7 +29,6 @@ public class AgendaController {
         agenda.setQuestion(request.getQuestion());
 
         Agenda createdAgenda;
-
         try {
             createdAgenda = agendaService.create(agenda);
         } catch (Exception exception) {
