@@ -5,6 +5,7 @@ import com.votingsystem.VotingSystem.interfaces.IAgendaService;
 import com.votingsystem.VotingSystem.interfaces.IVotingSessionRepository;
 import com.votingsystem.VotingSystem.interfaces.IVotingSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,13 +23,13 @@ public class VotingSessionService implements IVotingSessionService {
     }
 
     public VotingSession startSession(VotingSession votingSession) throws Exception {
-        if (!agendaService.findById(votingSession.agendaId).isPresent()) {
+        if (agendaService.findById(votingSession.agendaId).isEmpty()) {
             throw new Exception("Agenda not found");
         }
 
         votingSession.start = new Date();
         var startTimestamp = votingSession.start.getTime();
-        votingSession.end = new Date(startTimestamp + votingSession.sessionDurationInSeconds * 1000);
+        votingSession.end = new Date(startTimestamp + votingSession.sessionDurationInSeconds * 1000L);
         var createdVotingSession = votingSessionRepository.save(votingSession);
 
         dispatchVotingSessionTerminator(votingSession.sessionDurationInSeconds);
@@ -42,12 +43,12 @@ public class VotingSessionService implements IVotingSessionService {
                 Thread.sleep(timeSeconds * 1000L);
                 endVotingSession();
             } catch (Exception exception) {
-                System.err.println(exception);
+                System.err.println(exception.getMessage());
             }
         }).start();
     }
 
     public void endVotingSession() throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Not supported yet.");
-    };
+    }
 }
