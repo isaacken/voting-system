@@ -22,7 +22,7 @@ public class VotingSessionService implements IVotingSessionService {
     }
 
     public VotingSession startSession(VotingSession votingSession) throws Exception {
-        if (agendaService.findById(votingSession.agendaId).isEmpty()) {
+        if (agendaService.findById(votingSession.agendaId.toString()).isEmpty()) {
             throw new Exception("Agenda not found");
         }
 

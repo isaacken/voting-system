@@ -1,8 +1,10 @@
 package com.votingsystem.VotingSystem.entities;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.util.Date;
 
@@ -18,8 +20,7 @@ public class VotingSession {
     public Date end;
     public int sessionDurationInSeconds;
 
-    @DBRef
-    public String agendaId;
+    public ObjectId agendaId;
 
     public VotingSession() {
         sessionDurationInSeconds = DEFAULT_SESSION_DURATION;
@@ -43,5 +44,9 @@ public class VotingSession {
 
     public void setSessionDurationInSeconds(int sessionDurationInSeconds) {
         this.sessionDurationInSeconds = sessionDurationInSeconds;
+    }
+
+    public void setAgendaId(ObjectId agendaId) {
+        this.agendaId = agendaId;
     }
 }
