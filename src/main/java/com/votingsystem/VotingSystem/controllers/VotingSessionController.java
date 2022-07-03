@@ -25,15 +25,20 @@ public class VotingSessionController {
     @PostMapping("/start")
     public ResponseEntity<?> startSession(@RequestBody StartSessionRequest request) {
         var votingSession = new VotingSession();
-        votingSession.setSessionDurationInSeconds(request.getSessionDurationInSeconds());
+
+        if (request.getSessionDurationInSeconds() != 0) {
+            votingSession.setSessionDurationInSeconds(request.getSessionDurationInSeconds());
+        }
+
         votingSession.setAgendaId(new ObjectId(request.getAgendaId()));
 
+        VotingSession createdVotingSession;
         try {
-            votingSessionService.startSession(votingSession);
+            createdVotingSession = votingSessionService.startSession(votingSession);
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdVotingSession);
     }
 }

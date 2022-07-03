@@ -22,16 +22,22 @@ public class VotingSessionService implements IVotingSessionService {
     }
 
     public VotingSession startSession(VotingSession votingSession) throws Exception {
-        if (agendaService.findById(votingSession.agendaId.toString()).isEmpty()) {
+        if (!isVotingSessionValid(votingSession)) {
+            throw new Exception("Invalid voting session");
+        }
+
+        if (agendaService.findById(votingSession.getAgendaId().toString()).isEmpty()) {
             throw new Exception("Agenda not found");
         }
 
-        votingSession.start = new Date();
-        var startTimestamp = votingSession.start.getTime();
-        votingSession.end = new Date(startTimestamp + votingSession.sessionDurationInSeconds * 1000L);
+        votingSession.setStart(new Date());
+        var startTimestamp = votingSession.getStart().getTime();
+        var end = new Date(startTimestamp + votingSession.getSessionDurationInSeconds() * 1000L);
+        votingSession.setEnd(end);
+
         var createdVotingSession = votingSessionRepository.save(votingSession);
 
-        dispatchVotingSessionTerminator(votingSession.sessionDurationInSeconds);
+        dispatchVotingSessionTerminator(votingSession.getSessionDurationInSeconds());
 
         return createdVotingSession;
     }
@@ -49,5 +55,13 @@ public class VotingSessionService implements IVotingSessionService {
 
     public void endVotingSession() throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean isVotingSessionValid(VotingSession votingSession) {
+        if (votingSession.getAgendaId() == null) {
+            return false;
+        }
+
+        return true;
     }
 }
