@@ -45,6 +45,7 @@ public class VotingSessionServiceTest {
     }
 
     @Test
+    @DisplayName("should start a session when receiving valid data")
     public void givenValidVotingSession_whenStartSession_thenReturnVotingSession() {
         when(votingSessionRepository.save(votingSession)).thenReturn(votingSession);
         when(agendaService.findById(votingSession.getAgendaId().toString())).thenReturn(Optional.ofNullable(agenda));
@@ -62,6 +63,7 @@ public class VotingSessionServiceTest {
     }
 
     @Test
+    @DisplayName("should throw an error if agenda id is null")
     public void givenInvalidVotingSession_whenStartSession_thenThrowException() {
         votingSession.setSessionDurationInSeconds(0);
         votingSession.setAgendaId(null);
