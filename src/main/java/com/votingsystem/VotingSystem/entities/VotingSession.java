@@ -26,10 +26,6 @@ public class VotingSession {
         sessionDurationInSeconds = DEFAULT_SESSION_DURATION;
     }
 
-    public String getId() {
-        return id;
-    }
-
     public Date getStart() {
         return start;
     }
@@ -52,14 +48,6 @@ public class VotingSession {
 
     public void setAgendaId(ObjectId agendaId) {
         this.agendaId = agendaId;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Date getEnd() {
-        return end;
     }
 
     public void setEnd(Date end) {
