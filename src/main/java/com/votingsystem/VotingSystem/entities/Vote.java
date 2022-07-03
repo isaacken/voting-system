@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
-enum VoteType {
+enum VoteValue {
     YES, NO
 }
 
@@ -17,7 +17,7 @@ public class Vote {
 
     private String voterId;
 
-    private VoteType voteType;
+    private VoteValue voteValue;
 
     private ObjectId agendaId;
 
@@ -43,12 +43,12 @@ public class Vote {
         this.voterId = voterId;
     }
 
-    public VoteType getVoteType() {
-        return voteType;
+    public VoteValue getVoteValue() {
+        return voteValue;
     }
 
-    public void setVoteType(VoteType voteType) {
-        this.voteType = voteType;
+    public void setVoteValue(VoteValue voteValue) {
+        this.voteValue = voteValue;
     }
 
     public ObjectId getAgendaId() {
