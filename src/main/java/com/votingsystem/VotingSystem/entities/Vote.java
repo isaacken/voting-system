@@ -1,14 +1,11 @@
 package com.votingsystem.VotingSystem.entities;
 
+import com.votingsystem.VotingSystem.enums.VoteValue;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
-
-enum VoteValue {
-    YES, NO
-}
 
 @Document(collection = "votes")
 public class Vote {

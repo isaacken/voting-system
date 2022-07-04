@@ -1,12 +1,12 @@
 package com.votingsystem.VotingSystem.services;
 
 import com.votingsystem.VotingSystem.entities.Vote;
+import com.votingsystem.VotingSystem.exceptions.InvalidRequestException;
+import com.votingsystem.VotingSystem.exceptions.ResourceNotFoundException;
 import com.votingsystem.VotingSystem.interfaces.*;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Date;
 
@@ -24,23 +24,26 @@ public class VoteService implements IVoteService {
         this.votingSessionRepository = votingSessionRepository;
     }
 
-    public Vote voteAgenda(Vote vote) throws Exception {
+    public Vote voteAgenda(Vote vote) throws InvalidRequestException, ResourceNotFoundException {
         if (!isVoteValid(vote)) {
-            throw new Exception("Agenda ID, Voter ID and Vote Value are required");
+            throw new InvalidRequestException("Agenda ID, Voter ID and Vote Value are required");
         }
 
         if (!voterValidationService.isValidVoter(vote.getVoterId())) {
-            throw new Exception("Voter is not valid");
+            throw new ResourceNotFoundException("Voter is not valid");
         }
 
-        if (!voteRepository.findByVoterIdAndAgendaId(vote.getVoterId(), vote.getAgendaId().toString()).isEmpty()) {
-            throw new Exception("Voter has already voted for this agenda");
+        if (!voteRepository.findByVoterIdAndAgendaId(vote.getVoterId(), vote.getAgendaId()).isEmpty()) {
+            throw new InvalidRequestException("Voter has already voted for this agenda");
         }
 
         var now = new Date();
-        if (votingSessionRepository.findByAgendaIdEqualsAndStartGreaterThanEqualAndEndLessThanEqual(vote.getAgendaId().toString(), now, now).isEmpty()) {
-            throw new Exception("Voting session is not active");
+        var votingSession = votingSessionRepository.findActiveVotingSessionForAgenda(vote.getAgendaId(), now);
+        if (votingSession.isEmpty()) {
+            throw new ResourceNotFoundException("Voting session is not active");
         }
+
+        vote.setVotingSessionId(new ObjectId(votingSession.get().getId()));
 
         return voteRepository.save(vote);
     }

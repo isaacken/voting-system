@@ -53,4 +53,8 @@ public class VotingSession {
     public void setEnd(Date end) {
         this.end = end;
     }
+
+    public String getId() {
+        return id;
+    }
 }
