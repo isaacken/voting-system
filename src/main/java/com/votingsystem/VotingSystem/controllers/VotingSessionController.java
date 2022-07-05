@@ -1,6 +1,7 @@
 package com.votingsystem.VotingSystem.controllers;
 
 import com.votingsystem.VotingSystem.entities.VotingSession;
+import com.votingsystem.VotingSystem.exceptions.InvalidRequestException;
 import com.votingsystem.VotingSystem.interfaces.IVotingSessionService;
 import com.votingsystem.VotingSystem.requests.StartSessionRequest;
 import org.bson.types.ObjectId;
@@ -35,7 +36,7 @@ public class VotingSessionController {
         VotingSession createdVotingSession;
         try {
             createdVotingSession = votingSessionService.startSession(votingSession);
-        } catch (Exception exception) {
+        } catch (InvalidRequestException exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
 

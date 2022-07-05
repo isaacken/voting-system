@@ -1,6 +1,7 @@
 package com.votingsystem.VotingSystem.controllers;
 
 import com.votingsystem.VotingSystem.entities.Agenda;
+import com.votingsystem.VotingSystem.exceptions.InvalidRequestException;
 import com.votingsystem.VotingSystem.interfaces.IAgendaService;
 import com.votingsystem.VotingSystem.requests.CreateAgendaRequest;
 import com.votingsystem.VotingSystem.responses.CreateAgendaResponse;
@@ -31,8 +32,8 @@ public class AgendaController {
         Agenda createdAgenda;
         try {
             createdAgenda = agendaService.create(agenda);
-        } catch (Exception exception) {
-            return ResponseEntity.status(400).body("Invalid payload");
+        } catch (InvalidRequestException exception) {
+            return ResponseEntity.status(400).body(exception.getMessage());
         }
 
         var response = new CreateAgendaResponse(createdAgenda);

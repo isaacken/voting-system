@@ -1,6 +1,7 @@
 package com.votingsystem.VotingSystem.services;
 
 import com.votingsystem.VotingSystem.entities.Agenda;
+import com.votingsystem.VotingSystem.exceptions.InvalidRequestException;
 import com.votingsystem.VotingSystem.interfaces.IAgendaRepository;
 import com.votingsystem.VotingSystem.interfaces.IAgendaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class AgendaService implements IAgendaService {
         this.agendaRepository = agendaRepository;
     }
 
-    public Agenda create(Agenda agenda) throws Exception {
+    public Agenda create(Agenda agenda) throws InvalidRequestException {
         validateAgenda(agenda);
         return agendaRepository.save(agenda);
     }
@@ -27,8 +28,8 @@ public class AgendaService implements IAgendaService {
         return agendaRepository.findById(id);
     }
 
-    private void validateAgenda(Agenda agenda) throws Exception {
+    private void validateAgenda(Agenda agenda) throws InvalidRequestException {
         if (agenda.getQuestion().isBlank())
-            throw new Exception("Cannot create new agenda to vote without a question");
+            throw new InvalidRequestException("Cannot create new agenda to vote without a question");
     }
 }

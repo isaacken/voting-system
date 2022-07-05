@@ -1,6 +1,7 @@
 package com.votingsystem.VotingSystem.services;
 
 import com.votingsystem.VotingSystem.entities.VotingSession;
+import com.votingsystem.VotingSystem.exceptions.InvalidRequestException;
 import com.votingsystem.VotingSystem.interfaces.IAgendaService;
 import com.votingsystem.VotingSystem.interfaces.IVotingResultService;
 import com.votingsystem.VotingSystem.interfaces.IVotingSessionRepository;
@@ -25,13 +26,13 @@ public class VotingSessionService implements IVotingSessionService {
         this.votingResultService = votingResultService;
     }
 
-    public VotingSession startSession(VotingSession votingSession) throws Exception {
+    public VotingSession startSession(VotingSession votingSession) throws InvalidRequestException {
         if (!isVotingSessionValid(votingSession)) {
-            throw new Exception("Invalid voting session");
+            throw new InvalidRequestException("Invalid voting session");
         }
 
         if (agendaService.findById(votingSession.getAgendaId().toString()).isEmpty()) {
-            throw new Exception("Agenda not found");
+            throw new InvalidRequestException("Agenda not found");
         }
 
         votingSession.setStart(new Date());
