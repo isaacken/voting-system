@@ -25,4 +25,16 @@ public class VoteAgendaRequest {
     public String getVoteValue() {
         return voteValue;
     }
+
+    public void setVoterId(String voterId) {
+        this.voterId = voterId;
+    }
+
+    public void setAgendaId(String agendaId) {
+        this.agendaId = agendaId;
+    }
+
+    public void setVoteValue(String voteValue) {
+        this.voteValue = voteValue;
+    }
 }
