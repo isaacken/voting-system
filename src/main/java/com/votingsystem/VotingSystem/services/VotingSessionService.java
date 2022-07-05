@@ -53,8 +53,8 @@ public class VotingSessionService implements IVotingSessionService {
         }).start();
     }
 
-    public void endVotingSession() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void endVotingSession() {
+
     }
 
     public boolean isVotingSessionValid(VotingSession votingSession) {
