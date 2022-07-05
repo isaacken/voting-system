@@ -4,7 +4,6 @@ import com.votingsystem.VotingSystem.entities.Agenda;
 import com.votingsystem.VotingSystem.entities.VotingSession;
 import com.votingsystem.VotingSystem.interfaces.IAgendaService;
 import com.votingsystem.VotingSystem.interfaces.IVotingSessionRepository;
-import org.assertj.core.presentation.HexadecimalRepresentation;
 import org.bson.types.ObjectId;
 
 import org.junit.jupiter.api.BeforeEach;
