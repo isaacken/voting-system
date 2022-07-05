@@ -1,5 +1,8 @@
 package com.votingsystem.VotingSystem.entities;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -40,5 +43,15 @@ public class VotingResult {
 
     public void setNoVotes(int noVotes) {
         this.noVotes = noVotes;
+    }
+
+    @Override
+    public String toString() {
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        try {
+            return ow.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

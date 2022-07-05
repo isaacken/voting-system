@@ -2,6 +2,7 @@ package com.votingsystem.VotingSystem.services;
 
 import com.votingsystem.VotingSystem.entities.VotingSession;
 import com.votingsystem.VotingSystem.interfaces.IAgendaService;
+import com.votingsystem.VotingSystem.interfaces.IVotingResultService;
 import com.votingsystem.VotingSystem.interfaces.IVotingSessionRepository;
 import com.votingsystem.VotingSystem.interfaces.IVotingSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,13 @@ public class VotingSessionService implements IVotingSessionService {
 
     private final IVotingSessionRepository votingSessionRepository;
 
+    private final IVotingResultService votingResultService;
+
     @Autowired
-    public VotingSessionService(IAgendaService agendaService, IVotingSessionRepository votingSessionRepository) {
+    public VotingSessionService(IAgendaService agendaService, IVotingSessionRepository votingSessionRepository, IVotingResultService votingResultService) {
         this.agendaService = agendaService;
         this.votingSessionRepository = votingSessionRepository;
+        this.votingResultService = votingResultService;
     }
 
     public VotingSession startSession(VotingSession votingSession) throws Exception {
@@ -37,16 +41,16 @@ public class VotingSessionService implements IVotingSessionService {
 
         var createdVotingSession = votingSessionRepository.save(votingSession);
 
-        dispatchVotingSessionTerminator(votingSession.getSessionDurationInSeconds());
+        dispatchVotingSessionTerminator(votingSession.getSessionDurationInSeconds(), createdVotingSession);
 
         return createdVotingSession;
     }
 
-    private void dispatchVotingSessionTerminator(int timeSeconds) {
+    private void dispatchVotingSessionTerminator(int timeSeconds, VotingSession votingSession) {
         new Thread(() -> {
             try {
                 Thread.sleep(timeSeconds * 1000L);
-
+                votingResultService.getVotingResult(votingSession.getAgendaId());
             } catch (Exception exception) {
                 System.err.println(exception.getMessage());
             }
