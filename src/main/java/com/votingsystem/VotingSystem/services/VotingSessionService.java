@@ -46,15 +46,11 @@ public class VotingSessionService implements IVotingSessionService {
         new Thread(() -> {
             try {
                 Thread.sleep(timeSeconds * 1000L);
-                endVotingSession();
+
             } catch (Exception exception) {
                 System.err.println(exception.getMessage());
             }
         }).start();
-    }
-
-    public void endVotingSession() {
-
     }
 
     public boolean isVotingSessionValid(VotingSession votingSession) {
