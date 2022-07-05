@@ -26,6 +26,10 @@ public class VotingSession {
         sessionDurationInSeconds = DEFAULT_SESSION_DURATION;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public Date getStart() {
         return start;
     }

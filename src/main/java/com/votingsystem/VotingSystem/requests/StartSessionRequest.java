@@ -18,4 +18,12 @@ public class StartSessionRequest {
     public int getSessionDurationInSeconds() {
         return sessionDurationInSeconds;
     }
+
+    public void setAgendaId(String agendaId) {
+        this.agendaId = agendaId;
+    }
+
+    public void setSessionDurationInSeconds(int sessionDurationInSeconds) {
+        this.sessionDurationInSeconds = sessionDurationInSeconds;
+    }
 }

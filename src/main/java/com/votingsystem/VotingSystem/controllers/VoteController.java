@@ -30,7 +30,11 @@ public class VoteController {
         var vote = new Vote();
         vote.setAgendaId(new ObjectId(request.getAgendaId()));
         vote.setVoterId(request.getVoterId());
-        vote.setVoteValue(VoteValue.valueOf(request.getVoteValue()));
+        try {
+            vote.setVoteValue(VoteValue.valueOf(request.getVoteValue()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Vote value should be YES or NO");
+        }
 
         try {
             voteService.voteAgenda(vote);
